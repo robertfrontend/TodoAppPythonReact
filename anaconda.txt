@@ -1,0 +1,25 @@
+// abrir consola de conda
+// crear proyecto
+conda create --name nameproject python=3
+
+// activar entorno
+conda activate nameproyect
+
+// desactivar entorno
+conda deactivate
+
+
+pip install fastapi 
+
+pip install uvicorn
+
+
+// ejecutar proyecto
+uvicorn app:app
+
+// servidor se reinicia solo
+uvicorn app:app --reload
+
+//
+
+heroku git:remote -a fastapi-posts-robertfrontend

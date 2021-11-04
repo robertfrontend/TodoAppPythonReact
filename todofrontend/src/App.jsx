@@ -14,11 +14,14 @@ function App() {
     status: "todo",
   });
 
+  const [isloading, setLoading] = useState(false);
+
   useEffect(() => {
     GetData();
   }, []);
 
   const GetData = async () => {
+    setLoading(true);
     setData([]);
     try {
       const response = await axios.get(`${url}/todos`);
@@ -26,9 +29,12 @@ function App() {
       response.data.data.map((data) => {
         array.unshift(data);
       });
+
       setData(array);
+      setLoading(false);
     } catch (error) {
-      console.error("ha ocurrido un error");
+      alert("Ha ocurrido un error al traer las tareas");
+      setLoading(false);
     }
   };
 
@@ -46,27 +52,53 @@ function App() {
   };
 
   const saveTodo = async () => {
+    setLoading(true);
+
     try {
       const response = await axios.post(`${url}/todos`, form);
 
       GetData();
+      setLoading(false);
     } catch (error) {
-      console.log("ha ocurrido un errror al crear la tarea");
+      alert("Ha ocurrido un error al crear la tarea");
+      setLoading(false);
     }
 
     console.log(form, "creando tarea");
   };
 
   const deleteTask = async (id) => {
+    setLoading(true);
+
     try {
       const response = await axios.delete(`${url}/todos/${id}`);
-      console.log(response, "response tarea a eliminar");
+
       GetData();
+      setLoading(false);
     } catch (error) {
-      console.log(erro, "error al eliminar la tarea");
+      alert("Ha ocurrido un error al eliminar la tarea");
+      setLoading(false);
     }
 
     console.log(id, "id a eliminar");
+  };
+
+  const updateTask = async (data) => {
+    setLoading(true);
+
+    try {
+      const response = await axios.put(
+        `${url}/todos/?todo_id=${data.id}`,
+        data
+      );
+      setLoading(false);
+
+      GetData();
+    } catch (error) {
+      alert("Ha ocurrido un error al actualizar la tarea");
+
+      setLoading(false);
+    }
   };
 
   return (
@@ -83,11 +115,14 @@ function App() {
 
       <div className="form ">
         <Container>
-          <h1>Crear tarea</h1>
+          <h1 className="text-3xl font-bold text-gray-600 mt-10">
+            Crear tarea
+          </h1>
+
           <Row
             align="center"
             justify="center"
-            style={{ width: "40%", margin: "0 auto" }}
+            style={{ width: "100%", margin: "0 auto" }}
           >
             <Col md={12} className="my-3">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -169,7 +204,26 @@ function App() {
               </button>
             </Col>
           </Row>
-          <Todos data={data} deleteTask={deleteTask} />
+
+          <h1 className="text-3xl font-bold text-gray-600 mt-10">Mis Tareas</h1>
+
+          {!isloading && (
+            <Todos
+              data={data}
+              deleteTask={deleteTask}
+              updateTask={updateTask}
+            />
+          )}
+          {isloading && (
+            <div className="text-center">
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          )}
         </Container>
       </div>
     </div>

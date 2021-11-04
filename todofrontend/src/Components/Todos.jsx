@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Container } from "react-grid-system";
+import Card from "./Card";
 
 export default function Todos(props) {
   const [seleted, setSeleted] = useState("todo");
@@ -33,7 +34,7 @@ export default function Todos(props) {
 
     tasks["todo"] = array_todo;
     tasks["haciendo"] = array_haciendo;
-    tasks["dt"] = array_completada;
+    tasks["completada"] = array_completada;
     setTasks({ ...tasks });
   };
 
@@ -41,10 +42,28 @@ export default function Todos(props) {
     setSeleted(type);
   };
 
+  // change status tarea
   const changeStatus = (type, data) => {
     if (type === "delete") {
       props.deleteTask(data.id);
     }
+
+    if (type === "todo") {
+      data["status"] = "todo";
+      props.updateTask(data);
+    }
+
+    if (type === "haciendo") {
+      data["status"] = "haciendo";
+      props.updateTask(data);
+    }
+
+    if (type === "completada") {
+      data["status"] = "completada";
+      props.updateTask(data);
+    }
+
+    console.log(type, data, "change status data");
   };
 
   const clasbutton =
@@ -53,164 +72,35 @@ export default function Todos(props) {
   const classButtonActive =
     "inline-flex w-full justify-center items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
   return (
-    <Container className="mt-10">
-      <h1 className="text-3xl font-bold text-gray-600">Mis Tareas</h1>
+    <Container>
       <Row className="mt-2">
         <Col className="text-center">
-          <button
-            type="button"
-            className={seleted === "todo" ? classButtonActive : clasbutton}
-            onClick={() => changeButton("todo")}
-          >
-            Todo
-          </button>
-        </Col>
-        <Col className="text-center">
-          <button
-            type="button"
-            className={seleted === "haciendo" ? classButtonActive : clasbutton}
-            onClick={() => changeButton("haciendo")}
-          >
-            Haciendo
-          </button>
-        </Col>
-        <Col className="text-center">
-          <button
-            type="button"
-            className={
-              seleted === "completado" ? classButtonActive : clasbutton
-            }
-            onClick={() => changeButton("completada")}
-          >
-            Completado
-          </button>
-        </Col>
-      </Row>
-      <Row style={{ width: "30%" }}>
-        <h1 className="text-2xl font-bold text-gray-600 mt-4">
-          {seleted.toUpperCase()}
-          {seleted === "todo" && (
+          <h1 className="text-2xl font-bold text-gray-600 mt-4">
+            Todos
             <i className="fas fa-hammer text-blue-500 text-2xl cursor-pointer mx-2"></i>
-          )}
-          {seleted === "haciendo" && (
+          </h1>
+          {tasks.todo.map((todo, key) => (
+            <Card todo={todo} changeStatus={changeStatus} />
+          ))}
+        </Col>
+        <Col className="text-center">
+          <h1 className="text-2xl font-bold text-gray-600 mt-4">
+            En proceso
             <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer mx-2"></i>
-          )}
-          {seleted === "completada" && (
+          </h1>
+          {tasks.haciendo.map((todo, key) => (
+            <Card todo={todo} changeStatus={changeStatus} />
+          ))}
+        </Col>
+        <Col className="text-center">
+          <h1 className="text-2xl font-bold text-gray-600 mt-4">
+            Completadas
             <i className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"></i>
-          )}
-        </h1>
-        <>
-          {seleted === "todo" &&
-            tasks.todo.map((todo, key) => (
-              <Col
-                xs={12}
-                className="mt-4 bg-blue-100 p-4 rounded-lg"
-                key={key}
-              >
-                {/* content */}
-                <div className="content mb-2">
-                  <span className="text-2xl font-bold text-gray-800">
-                    {todo.name}
-                  </span>
-                  <p className="text-md font-semibold text-gray-700">
-                    {todo.description}
-                  </p>
-                  <p className="text-md font-semibold text-gray-700">
-                    Prioridad:{" "}
-                    <span className="font-bold">{todo.priority}</span>
-                  </p>
-                </div>
-                {/* footer */}
-                <div className="footer ">
-                  <Row align="start" justify="start">
-                    <Col>
-                      <i
-                        className="fas fa-minus-circle text-red-500 text-2xl cursor-pointer"
-                        onClick={() => changeStatus("delete", todo)}
-                      ></i>
-                      <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer mx-2"></i>
-                      {/* <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer"></i> */}
-                      <i className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"></i>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            ))}
-
-          {seleted === "haciendo" &&
-            tasks.haciendo.map((todo, key) => (
-              <Col
-                xs={12}
-                className="mt-4 bg-yellow-100 p-4 rounded-lg"
-                key={key}
-              >
-                {/* content */}
-                <div className="content mb-2">
-                  <span className="text-2xl font-bold text-gray-800">
-                    {todo.name}
-                  </span>
-                  <p className="text-md font-semibold text-gray-700">
-                    {todo.description}
-                  </p>
-                  <p className="text-md font-semibold text-gray-700">
-                    Prioridad:{" "}
-                    <span className="font-bold">{todo.priority}</span>
-                  </p>
-                </div>
-                {/* footer */}
-                <div className="footer ">
-                  <Row align="start" justify="start">
-                    <Col>
-                      <i
-                        className="fas fa-minus-circle text-red-500 text-2xl cursor-pointer"
-                        onClick={() => changeStatus("delete", todo)}
-                      ></i>
-                      <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer mx-2"></i>
-                      {/* <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer"></i> */}
-                      <i className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"></i>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            ))}
-
-          {seleted === "completada" &&
-            tasks.completada.map((todo, key) => (
-              <Col
-                xs={12}
-                className="mt-4 bg-green-100 p-4 rounded-lg"
-                key={key}
-              >
-                {/* content */}
-                <div className="content mb-2">
-                  <span className="text-2xl font-bold text-gray-800">
-                    {todo.name}
-                  </span>
-                  <p className="text-md font-semibold text-gray-700">
-                    {todo.description}
-                  </p>
-                  <p className="text-md font-semibold text-gray-700">
-                    Prioridad:{" "}
-                    <span className="font-bold">{todo.priority}</span>
-                  </p>
-                </div>
-                {/* footer */}
-                <div className="footer ">
-                  <Row align="start" justify="start">
-                    <Col>
-                      <i
-                        className="fas fa-minus-circle text-red-500 text-2xl cursor-pointer"
-                        onClick={() => changeStatus("delete", todo)}
-                      ></i>
-                      <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer mx-2"></i>
-                      {/* <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer"></i> */}
-                      <i className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"></i>
-                    </Col>
-                  </Row>
-                </div>
-              </Col>
-            ))}
-        </>
+          </h1>
+          {tasks.completada.map((todo, key) => (
+            <Card todo={todo} changeStatus={changeStatus} />
+          ))}
+        </Col>
       </Row>
     </Container>
   );

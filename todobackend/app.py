@@ -83,6 +83,7 @@ def delete_todo(id_todo: str):
 
 @app.put('/todos/')
 def update_posts(todo_id: str, updateTodo: Todo):
+    print(updateTodo, 'update todo')
     for index, todo in enumerate(todos):
         if todo["id"] == todo_id:
             todos[index]['name'] = updateTodo.name
