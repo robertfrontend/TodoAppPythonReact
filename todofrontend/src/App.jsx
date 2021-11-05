@@ -33,7 +33,6 @@ function App() {
       setData(array);
       setLoading(false);
     } catch (error) {
-      alert("Ha ocurrido un error al traer las tareas");
       setLoading(false);
     }
   };
@@ -67,7 +66,6 @@ function App() {
         status: "todo",
       });
     } catch (error) {
-      alert("Ha ocurrido un error al crear la tarea");
       setLoading(false);
     }
 
@@ -83,7 +81,6 @@ function App() {
       GetData();
       setLoading(false);
     } catch (error) {
-      alert("Ha ocurrido un error al eliminar la tarea");
       setLoading(false);
     }
 

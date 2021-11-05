@@ -77,7 +77,7 @@ export default function Todos(props) {
   return (
     <Container>
       <Row className="mt-2">
-        <Col className="text-center">
+        <Col sm={12} md={4} className="text-center">
           <h1 className="text-2xl font-bold text-gray-600 mt-4">
             Todos
             <i className="fas fa-hammer text-blue-500 text-2xl cursor-pointer mx-2"></i>
@@ -86,7 +86,7 @@ export default function Todos(props) {
             <Card todo={todo} changeStatus={changeStatus} />
           ))}
         </Col>
-        <Col className="text-center">
+        <Col sm={12} md={4} className="text-center">
           <h1 className="text-2xl font-bold text-gray-600 mt-4">
             En proceso
             <i className="fas fa-hammer text-yellow-500 text-2xl cursor-pointer mx-2"></i>
@@ -95,7 +95,7 @@ export default function Todos(props) {
             <Card todo={todo} changeStatus={changeStatus} />
           ))}
         </Col>
-        <Col className="text-center">
+        <Col sm={12} md={4} className="text-center">
           <h1 className="text-2xl font-bold text-gray-600 mt-4">
             Completadas
             <i className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"></i>
