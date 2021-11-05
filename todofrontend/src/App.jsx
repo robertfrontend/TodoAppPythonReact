@@ -6,7 +6,7 @@ import "./App.css";
 import Todos from "./Components/Todos";
 
 function App() {
-  const url = "http://127.0.0.1:8000";
+  const url = "https://todopythonrobertfronted.herokuapp.com";
 
   const [data, setData] = useState([]);
 
