@@ -59,6 +59,13 @@ function App() {
 
       GetData();
       setLoading(false);
+
+      setForm({
+        priority: "",
+        name: "",
+        description: "",
+        status: "todo",
+      });
     } catch (error) {
       alert("Ha ocurrido un error al crear la tarea");
       setLoading(false);
@@ -87,13 +94,10 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await axios.put(
-        `${url}/todos/?todo_id=${data.id}`,
-        data
-      );
+      await axios.put(`${url}/todos/?todo_id=${data.id}`, data);
       setLoading(false);
 
-      GetData();
+      // GetData();
     } catch (error) {
       alert("Ha ocurrido un error al actualizar la tarea");
 
@@ -133,6 +137,7 @@ function App() {
                 id="name"
                 type="text"
                 placeholder="Nombre de la tarea"
+                value={form.name}
                 onChange={onChange}
               />
             </Col>
@@ -144,6 +149,7 @@ function App() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
                 type="text"
+                value={form.description}
                 onChange={onChange}
                 placeholder="Escribe una descripción de la tarea..."
               ></textarea>
@@ -207,16 +213,12 @@ function App() {
 
           <h1 className="text-3xl font-bold text-gray-600 mt-10">Mis Tareas</h1>
 
-          {!isloading && (
-            <Todos
-              data={data}
-              deleteTask={deleteTask}
-              updateTask={updateTask}
-            />
-          )}
+          {/* {!isloading && ( */}
+          <Todos data={data} deleteTask={deleteTask} updateTask={updateTask} />
+          {/* )} */}
           {isloading && (
             <div className="text-center">
-              <div class="lds-ellipsis">
+              <div className="lds-ellipsis">
                 <div></div>
                 <div></div>
                 <div></div>

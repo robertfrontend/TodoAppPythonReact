@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container } from "react-grid-system";
+import { Row, Col } from "react-grid-system";
 
 function Card(props) {
   //   console.log(props, "props klk paapa card");
@@ -40,7 +40,25 @@ function Card(props) {
           Status: <span className="font-bold"> {props.todo.status} </span>
         </p>
         <p className="text-md font-semibold text-gray-700">
-          Prioridad: <span className="font-bold"> {props.todo.priority} </span>
+          Prioridad:{" "}
+          <span className="font-bold">
+            {" "}
+            {props.todo.priority === "baja" && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-300 text-gray-800">
+                {props.todo.priority.toUpperCase()}
+              </span>
+            )}
+            {props.todo.priority === "media" && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-300 text-gray-800">
+                {props.todo.priority.toUpperCase()}
+              </span>
+            )}
+            {props.todo.priority === "alta" && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-300 text-gray-800">
+                {props.todo.priority.toUpperCase()}
+              </span>
+            )}
+          </span>
         </p>
       </div>
       {/* footer */}
@@ -72,12 +90,6 @@ function Card(props) {
                 onClick={() => props.changeStatus("completada", props.todo)}
               ></i>
             )}
-            {/* {!props.todo.status === "completada" && (
-              <i
-                className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"
-                onClick={() => props.changeStatus("completada", props.todo)}
-              ></i>
-            )} */}
           </Col>
         </Row>
       </div>

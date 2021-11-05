@@ -21,6 +21,9 @@ export default function Todos(props) {
     let array_completada = [];
 
     props.data.map((dt) => {
+      if (dt.status === "") {
+        array_todo.push(dt);
+      }
       if (dt.status === "todo") {
         array_todo.push(dt);
       }

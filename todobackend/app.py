@@ -56,7 +56,6 @@ def get_todos():
 
 @app.post('/todos')
 def save_todo(todo: Todo):
-    print(todo, 'todo dataaa')
     todo.id = str(uuid())
     todos.append(todo.dict())
 
