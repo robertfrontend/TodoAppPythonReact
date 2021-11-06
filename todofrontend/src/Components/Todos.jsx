@@ -101,7 +101,7 @@ export default function Todos(props) {
             <i className="fas fa-check-square text-green-500 text-2xl cursor-pointer mx-2"></i>
           </h1>
           {tasks.completada.map((todo, key) => (
-            <Card todo={todo} changeStatus={changeStatus} />
+            <Card todo={todo} changeStatus={changeStatus} key={key} />
           ))}
         </Col>
       </Row>
