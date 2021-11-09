@@ -6,6 +6,7 @@ from typing import Text
 
 class TaskModel(BaseModel):
     id: Optional[str]
+    key: Optional[str]
     name: str
     description: Text
     status: str

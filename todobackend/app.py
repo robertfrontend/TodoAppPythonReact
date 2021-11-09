@@ -1,37 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from pyrebase import pyrebase
-
 
 # ROUTES
 from routes.tasks import tasks
 from routes.user import user
+from routes.auth import auth
 
-# db firebase
-# from config.db_firebase import db_firebase
 
 app = FastAPI()
 
 app.include_router(tasks)
-app.include_router(user)
-
-
-# firebaseConfig = {
-#     "apiKey": "AIzaSyCkhigSc7cVuIIO7AoJsdNYNDXOuhYMVU0",
-#     "authDomain": "todoappfastapi.firebaseapp.com",
-#     "projectId": "todoappfastapi",
-#     "storageBucket": "todoappfastapi.appspot.com",
-#     "messagingSenderId": "872598748288",
-#     "appId": "1:872598748288:web:1454391d320f64e7f13a65",
-#     "measurementId": "G-9PGBP7ML7C",
-#     "databaseURL": "https://todoappfastapi-default-rtdb.firebaseio.com/"
-# }
-
-# firebase = pyrebase.initialize_app(firebaseConfig)
-
-# db = firebase.database()
-
-# # push data
+# app.include_router(user)
+app.include_router(auth)
 
 
 origins = [

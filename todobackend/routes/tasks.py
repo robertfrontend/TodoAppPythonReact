@@ -4,7 +4,7 @@ from uuid import uuid4 as uuid
 from models.task import TaskModel
 
 # db firebase
-from config.db_firebase import db_firebase
+from config.db_firebase import DB_FIREBASE
 
 tasks = APIRouter()
 
@@ -13,23 +13,27 @@ tasks_db = []
 
 @tasks.get('/tasks')
 def get_tasks():
+    results = DB_FIREBASE.child("tasks").get()
 
-    results = db_firebase.child("tasks").get()
-    print(results, 'data firebase')
+    task = []
 
     for result in results.each():
-        tasks_db.append(result.val())
-        print(result.val())
+        # obtener la key de una tarea
+        new_result = result.val()
+        new_result["key"] = result.key()
 
-    if len(tasks_db) == 0:
+        task.append(new_result)
+        tasks_db.append(new_result)
+
+    if len(task) == 0:
         return {
             "message": "No hay datos",
-            "data": tasks_db
+            "data": task
         }
 
     return {
         "message": 'Todo Ok',
-        "data": tasks_db
+        "data": task
     }
 
 
@@ -45,7 +49,7 @@ def save_todo(todo: TaskModel):
     new_task = todo.dict()
     new_task.pop('created_at')
 
-    db_firebase.child("tasks").push(new_task)
+    DB_FIREBASE.child("tasks").push(new_task)
 
     return {
         "message": "Todo creado con exito!",
@@ -67,15 +71,29 @@ def delete_todo(id_todo: str):
 
 @tasks.put('/tasks/')
 def update_posts(todo_id: str, updateTodo: TaskModel):
-    print(updateTodo, 'update todo')
-    for index, todo in enumerate(tasks_db):
-        if todo["id"] == todo_id:
-            tasks_db[index]['name'] = updateTodo.name
-            tasks_db[index]['description'] = updateTodo.description
-            tasks_db[index]['status'] = updateTodo.status
-            tasks_db[index]['priority'] = updateTodo.priority
-            return {
-                "message": "Tarea actualizada",
-                "data": tasks_db
-            }
-    raise HTTPException(status_code=404, detail="Tarea not found")
+
+    try:
+        # obtener el key de la task
+        key_task = updateTodo.key
+        seleted_task = DB_FIREBASE.child("tasks").child(key_task).get()
+
+        print(seleted_task.val()['name'], 'tarea elegida desde la db')
+
+        # convertir dato que viene de firebase
+        task_val = seleted_task.val()
+
+        modified_task = {}
+
+        modified_task['name'] = task_val['name'] = updateTodo.name
+        modified_task['description'] = task_val['description'] = updateTodo.description
+        modified_task['status'] = task_val['status'] = updateTodo.status
+        modified_task['priority'] = task_val['priority'] = updateTodo.priority
+
+        DB_FIREBASE.child("tasks").child(key_task).update(modified_task)
+
+        return {
+            "message": "Tarea actualizada",
+            "data": tasks_db
+        }
+    except:
+        raise HTTPException(status_code=404, detail="Tarea not found")
