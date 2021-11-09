@@ -3,6 +3,9 @@ from fastapi import HTTPException
 from uuid import uuid4 as uuid
 from models.task import TaskModel
 
+# db firebase
+from config.db_firebase import db_firebase
+
 tasks = APIRouter()
 
 tasks_db = []
@@ -10,6 +13,14 @@ tasks_db = []
 
 @tasks.get('/tasks')
 def get_tasks():
+
+    results = db_firebase.child("tasks").get()
+    print(results, 'data firebase')
+
+    for result in results.each():
+        tasks_db.append(result.val())
+        print(result.val())
+
     if len(tasks_db) == 0:
         return {
             "message": "No hay datos",
@@ -29,6 +40,12 @@ def save_todo(todo: TaskModel):
 
     if todo.name == '' or todo.description == '' or todo.status == '':
         return HTTPException(status_code=401, detail="Algunos campos estan vacios")
+
+    # crear tarea en firebase
+    new_task = todo.dict()
+    new_task.pop('created_at')
+
+    db_firebase.child("tasks").push(new_task)
 
     return {
         "message": "Todo creado con exito!",

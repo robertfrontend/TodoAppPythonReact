@@ -12,23 +12,22 @@ user = APIRouter()
 
 @user.get('/users')
 def find_all_user():
-    return usersEntity(conn.local.user.find())
+    return 'get users'
+    # return usersEntity(conn.local.user.find())
 
 
 @user.post('/users')
 def create_user(user: User):
     new_user = dict(user)
 
-    id = conn.local.user.insert_one(new_user).inserted_id
-
-    return str(id)
+    return 'create user'
 
 
-@user.put('/user')
-def get_users():
-    return {"hello": "users"}
+# @user.put('/user')
+# def get_users():
+#     return {"hello": "users"}
 
 
-@user.delete('/user')
-def get_users():
-    return {"hello": "users"}
+# @user.delete('/user')
+# def get_users():
+#     return {"hello": "users"}
