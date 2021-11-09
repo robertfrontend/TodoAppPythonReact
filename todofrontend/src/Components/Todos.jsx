@@ -21,7 +21,7 @@ export default function Todos(props) {
     let array_completada = [];
 
     props.data.map((dt) => {
-      if (dt.status === "") {
+      if (dt.status === "string") {
         array_todo.push(dt);
       }
       if (dt.status === "todo") {
@@ -38,7 +38,9 @@ export default function Todos(props) {
     tasks["todo"] = array_todo;
     tasks["haciendo"] = array_haciendo;
     tasks["completada"] = array_completada;
-    setTasks({ ...tasks });
+    setTasks({
+      ...tasks,
+    });
   };
 
   const changeButton = (type) => {
