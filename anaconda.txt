@@ -23,3 +23,7 @@ uvicorn app:app --reload
 //
 
 heroku git:remote -a fastapi-posts-robertfrontend
+
+
+// modulo de conexion mongodb
+pip install pymongo

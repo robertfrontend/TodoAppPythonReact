@@ -3,12 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # ROUTES
 from routes.tasks import tasks
+from routes.user import user
 
 app = FastAPI()
 
-todos = []
-
 app.include_router(tasks)
+app.include_router(user)
 
 
 origins = [
