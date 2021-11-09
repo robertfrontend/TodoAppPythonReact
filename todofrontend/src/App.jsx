@@ -4,6 +4,7 @@ import axios from "axios";
 
 import "./App.css";
 import Todos from "./Components/Todos";
+import ButtonsPriority from "./Components/ButtonsPriority";
 
 function App() {
   // const url = "https://todopythonrobertfronted.herokuapp.com";
@@ -133,8 +134,8 @@ function App() {
           >
             <Col md={12} className="my-3">
               <label className="block text-gray-700 text-sm font-bold mb-2">
-                Título{" "}
-              </label>{" "}
+                Título
+              </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="name"
@@ -142,12 +143,12 @@ function App() {
                 placeholder="Nombre de la tarea"
                 value={form.name}
                 onChange={onChange}
-              />{" "}
-            </Col>{" "}
+              />
+            </Col>
             <Col md={12} className="my-3">
               <label className="block text-gray-700 text-sm font-bold mb-2">
-                Descripción{" "}
-              </label>{" "}
+                Descripción
+              </label>
               <textarea
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
@@ -155,71 +156,39 @@ function App() {
                 value={form.description}
                 onChange={onChange}
                 placeholder="Escribe una descripción de la tarea..."
-              ></textarea>{" "}
-            </Col>{" "}
+              ></textarea>
+            </Col>
             <Col md={12} className="my-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Prioridad{" "}
-              </label>{" "}
-              <button
-                type="button"
-                className="relative inline-flex items-center px-4 py-2 rounded-l-md border
-    border - gray - 300 bg - white text - sm font - medium text - gray - 700 hover: bg - gray - 50 focus: z - 10 focus: outline - none focus: ring - 1 focus: ring - indigo - 500 focus: border - indigo - 500 "
-                onClick={() => changePriority("baja")}
-              >
-                Baja{" "}
-              </button>{" "}
-              <button
-                type="button"
-                className="-ml-px relative inline-flex items-center
-    px - 4 py - 2 border border - gray - 300 bg - white text - sm font - medium text - gray - 700 hover: bg - gray - 50 focus: z - 10 focus: outline - none focus: ring - 1 focus: ring - indigo - 500 focus: border - indigo - 500 "
-                onClick={() => changePriority("media")}
-              >
-                Media{" "}
-              </button>{" "}
-              <button
-                type="button"
-                className="-ml-px relative inline-flex items-center 
-    px - 4 py - 2 rounded - r - md border border - gray - 300 bg - white text - sm font - medium text - gray - 700 hover: bg - gray - 50 focus: z - 10 focus: outline - none focus: ring - 1 focus: ring - indigo - 500 focus: border - indigo - 500 "
-                onClick={() => changePriority("alta")}
-              >
-                Alta{" "}
-              </button>{" "}
-            </Col>{" "}
+              <ButtonsPriority changePriority={changePriority} />
+            </Col>
             <Col md={12}>
-              <p className="text-red-400">
-                {" "}
-                Todos los campos son requeridos *{" "}
-              </p>{" "}
-            </Col>{" "}
+              <p className="text-red-400">Todos los campos son requeridos *</p>
+            </Col>
             <Col className="mt-5">
               <button
                 type="button"
                 // disabled
                 className="inline-flex w-full  justify-center items-center 
-    px - 6 py - 3 border border - transparent text - base font - medium rounded - md s hadow - sm text - white bg - indigo - 600 hover: bg - indigo - 700 focus: outline - none focus: ring - 2 focus: ring - offset - 2 focus: ring - indigo - 500 "
+                    px-6 py-3 border border-transparent text-base font-medium rounded-md s hadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none focus: ring-2 focus: ring-offset-2 focus: ring-indigo-500 "
                 onClick={() => saveTodo()}
               >
-                Crear Tarea{" "}
-              </button>{" "}
-            </Col>{" "}
+                Crear Tarea
+              </button>
+            </Col>
           </Row>
-          <h1 className="text-3xl font-bold text-gray-600 mt-10">
-            {" "}
-            Mis Tareas{" "}
-          </h1>
-          {/* {!isloading && ( */}{" "}
-          <Todos data={data} deleteTask={deleteTask} updateTask={updateTask} />{" "}
-          {/* )} */}{" "}
+          <h1 className="text-3xl font-bold text-gray-600 mt-10">Mis Tareas</h1>
+          {/* {!isloading && ( */}
+          <Todos data={data} deleteTask={deleteTask} updateTask={updateTask} />
+          {/* )} */}
           {isloading && (
             <div className="text-center">
               <div className="lds-ellipsis">
-                <div> </div> <div> </div> <div> </div> <div> </div>{" "}
-              </div>{" "}
+                <div> </div> <div> </div> <div> </div> <div> </div>
+              </div>
             </div>
-          )}{" "}
-        </Container>{" "}
-      </div>{" "}
+          )}
+        </Container>
+      </div>
     </div>
   );
 }
