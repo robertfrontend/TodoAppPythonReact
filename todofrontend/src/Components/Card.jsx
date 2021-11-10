@@ -39,15 +39,15 @@ function Card(props) {
           {props.todo.name}
         </span>
         <p className="text-md font-semibold text-gray-700">
-          {props.todo.description}
+          Descripción:
+          <span className="font-bold"> {props.todo.description}</span>
         </p>
         <p className="text-md font-semibold text-gray-700">
           Status: <span className="font-bold"> {props.todo.status} </span>
         </p>
-        <p className="text-md font-semibold text-gray-700">
-          Prioridad:{" "}
-          <span className="font-bold">
-            {" "}
+        <p className="text-md font-semibold text-gray-700 ">
+          Prioridad:
+          <span className="font-bold mx-2">
             {props.todo.priority === "baja" && (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-300 text-gray-800">
                 {props.todo.priority.toUpperCase()}

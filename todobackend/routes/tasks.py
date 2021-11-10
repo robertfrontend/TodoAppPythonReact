@@ -63,14 +63,36 @@ def save_todo(todo: TaskModel):
     }
 
 
-@tasks.delete('/tasks/{id_todo}')
-def delete_todo(id_todo: str):
+# @tasks.delete('/tasks/{id_todo}')
+# def delete_todo(id_todo: str):
 
+#     try:
+#         seleted_task = DB_FIREBASE.child("tasks").child(id_todo).get()
+
+#         DB_FIREBASE.child("tasks").child(id_todo).remove()
+#         print(seleted_task.val(), 'Tarea eliminada exitosament1!!!')
+#     except:
+#         raise HTTPException(status_code=404, detail=" Tarea not found")
+
+
+@tasks.put('/tasks_delete/')
+def delete_todo(todo_id: str, updateTodo: TaskModel):
+    print(todo_id)
+    print(updateTodo)
     try:
-        seleted_task = DB_FIREBASE.child("tasks").child(id_todo).get()
 
-        DB_FIREBASE.child("tasks").child(id_todo).remove()
-        print(seleted_task.val(), 'Tarea eliminada exitosament1!!!')
+        # buscar tarea en la db
+        seleted_task = DB_FIREBASE.child(
+            "users").child(updateTodo.localId).child('tasks').child(todo_id).get()
+
+        # eliminar la tarea en la db del usuario
+        DB_FIREBASE.child(
+            "users").child(updateTodo.localId).child('tasks').child(todo_id).remove()
+
+        return {
+            "message": "Tarea eliminada exitosament!!!",
+            "data": seleted_task.val()
+        }
     except:
         raise HTTPException(status_code=404, detail=" Tarea not found")
 
@@ -79,7 +101,6 @@ def delete_todo(id_todo: str):
 def update_posts(todo_id: str, updateTodo: TaskModel):
 
     try:
-
         # buscar tarea en la base de datos, especificamente en la del usuario
         seleted_task = DB_FIREBASE.child(
             "users").child(updateTodo.localId).child('tasks').child(todo_id).get()

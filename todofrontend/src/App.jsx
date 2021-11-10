@@ -82,12 +82,7 @@ function App() {
   const saveTodo = async () => {
     setLoading(true);
 
-    if (
-      form.priority === "" ||
-      form.name === "" ||
-      form.description === "" ||
-      form.priority === ""
-    ) {
+    if (!form.name || !form.description || !form.priority) {
       alert("Todos los campos deben de estar llenos");
       return;
     }
@@ -113,11 +108,11 @@ function App() {
     console.log(form, "creando tarea");
   };
 
-  const deleteTask = async (id) => {
+  const deleteTask = async (data) => {
     setLoading(true);
 
     try {
-      const response = await axios.delete(`${url}/tasks/${id}`);
+      await axios.put(`${url}/tasks_delete/?todo_id=${data.key}`, data);
 
       GetData();
       setLoading(false);
@@ -125,7 +120,7 @@ function App() {
       setLoading(false);
     }
 
-    console.log(id, "id a eliminar");
+    console.log(data, "id a eliminar");
   };
 
   const updateTask = async (data) => {
@@ -206,39 +201,44 @@ function App() {
     localStorage.removeItem("email");
     localStorage.removeItem("localId");
     setUserLoged(false);
+    GetData();
+  };
+
+  const closeModal = () => {
+    setModalLogin(false);
+    GetData();
   };
 
   return (
     <div className="App">
-      {open_modal_login && (
-        <ModalAuth
-          open_modal_login={open_modal_login}
-          closeModal={openModal}
-          setUserLoged={validateUser}
-        />
-      )}
-      <Row>
-        <Col xs={10}></Col>
-        <Col xs={2} className="text-right">
-          {userlogedd ? (
-            <a
-              href="#"
-              className="text-blue-600 pr-5 font-bold"
-              onClick={() => abandonar()}
-            >
-              Salir
-            </a>
-          ) : (
-            <a
-              href="#"
-              className="text-blue-600 pr-5 font-bold"
-              onClick={() => openModal()}
-            >
-              Iniciar Sesion
-            </a>
-          )}
-        </Col>
-      </Row>
+      <ModalAuth
+        open_modal_login={open_modal_login}
+        closeModal={closeModal}
+        setUserLoged={validateUser}
+      />
+      <Container>
+        <Row className="pt-2">
+          <Col xs={12} className="text-right">
+            {userlogedd ? (
+              <a
+                href="#"
+                className="text-gray-400 font-bold"
+                onClick={() => abandonar()}
+              >
+                Salir de {form.email} <i className="fas fa-sign-out-alt"></i>
+              </a>
+            ) : (
+              <a
+                href="#"
+                className="text-blue-600 font-bold"
+                onClick={() => openModal()}
+              >
+                Iniciar Sesion <i className="fas fa-sign-out-alt"></i>
+              </a>
+            )}
+          </Col>
+        </Row>
+      </Container>
       <header className="text-center py-4">
         <h1 className="text-3xl font-bold text-indigo-600"> Todo app </h1>{" "}
         <p className="text-md font-semibold text-gray-700">
@@ -290,7 +290,10 @@ function App() {
             {form.description && (
               <>
                 <Col md={12} className="my-3">
-                  <ButtonsPriority changePriority={changePriority} />
+                  <ButtonsPriority
+                    changePriority={changePriority}
+                    priority={form.priority}
+                  />
                 </Col>
                 <Col md={12} className="my-3">
                   {form.priority === "baja" && (
@@ -311,22 +314,27 @@ function App() {
                 </Col>
               </>
             )}
-            {!form.description ||
-              !form.name ||
-              (!form.priority && (
-                <Col md={12}>
-                  <p className="text-red-400">
-                    Todos los campos son requeridos *
-                  </p>
-                </Col>
-              ))}
             <Col className="mt-5">
+              {!form.name || !form.description || !form.priority ? (
+                <p className="text-red-400">
+                  Todos los campos son requeridos *
+                </p>
+              ) : (
+                <></>
+              )}
               {type_form === "create" ? (
                 <button
                   type="button"
                   // disabled
-                  className="inline-flex w-full  justify-center items-center 
-                    px-6 py-3 border border-transparent text-base font-medium rounded-md s hadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none focus: ring-2 focus: ring-offset-2 focus: ring-indigo-500 "
+                  className={
+                    !form.name || !form.description || !form.priority
+                      ? `inline-flex w-full  justify-center items-center 
+                        px-6 py-3 border border-transparent text-base font-medium rounded-md 
+                        shadow-sm text-gray-500 bg-gray-300 focus: outline-none`
+                      : `inline-flex w-full  justify-center items-center 
+                  px-6 py-3 border border-transparent text-base font-medium rounded-md 
+                  shadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none`
+                  }
                   onClick={() => saveTodo()}
                 >
                   Crear Tarea
@@ -334,9 +342,15 @@ function App() {
               ) : (
                 <button
                   type="button"
-                  // disabled
-                  className="inline-flex w-full  justify-center items-center 
-                    px-6 py-3 border border-transparent text-base font-medium rounded-md s hadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none focus: ring-2 focus: ring-offset-2 focus: ring-indigo-500 "
+                  className={
+                    !form.name || !form.description || !form.priority
+                      ? `inline-flex w-full  justify-center items-center 
+                        px-6 py-3 border border-transparent text-base font-medium rounded-md 
+                        shadow-sm text-gray-500 bg-gray-300 focus: outline-none`
+                      : `inline-flex w-full  justify-center items-center 
+                  px-6 py-3 border border-transparent text-base font-medium rounded-md 
+                  shadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none`
+                  }
                   onClick={() => saveTodoEdit()}
                 >
                   Editar Tarea

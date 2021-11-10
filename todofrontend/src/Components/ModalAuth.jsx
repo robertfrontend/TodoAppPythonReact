@@ -37,7 +37,12 @@ export default function ModalAuth(props) {
       localStorage.setItem("email", data.email);
       localStorage.setItem("localId", data.localId);
       props.setUserLoged();
-      setOpen(false);
+      props.closeModal(false);
+
+      setForm({
+        email: "",
+        password: "",
+      });
     } catch (error) {
       alert("error al iniciar sesion");
     }
@@ -151,7 +156,7 @@ export default function ModalAuth(props) {
                     Registrarme
                   </h1>
                   <Row>
-                    <Col md={12} className="my-2">
+                    {/* <Col md={12} className="my-2">
                       <label className="block text-gray-700 text-sm font-bold mb-2">
                         Nombre
                       </label>
@@ -163,7 +168,7 @@ export default function ModalAuth(props) {
                         value={form.name}
                         onChange={onChange}
                       />
-                    </Col>
+                    </Col> */}
                     <Col md={12} className="my-2">
                       <label className="block text-gray-700 text-sm font-bold mb-2">
                         Correo/Usuario
