@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { API } from "../utils/config";
 
 export default function ModalAuth(props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(props.open_modal_login);
   const [login, setLogin] = useState(true);
 
   const [form, setForm] = useState({
@@ -15,7 +15,7 @@ export default function ModalAuth(props) {
 
   useEffect(() => {
     setOpen(props.open_modal_login);
-  }, [props.open_modal_login]);
+  }, [props]);
 
   const onChange = (e) => {
     const value = e.target.value;
@@ -30,13 +30,14 @@ export default function ModalAuth(props) {
   const handleLogin = async () => {
     try {
       const response = await API.post("/login", form);
-      setOpen(false);
 
       const data = response.data.data;
 
       localStorage.setItem("token", data.idToken);
       localStorage.setItem("email", data.email);
       localStorage.setItem("localId", data.localId);
+      props.setUserLoged();
+      setOpen(false);
     } catch (error) {
       alert("error al iniciar sesion");
     }
@@ -51,12 +52,18 @@ export default function ModalAuth(props) {
     }
   };
 
+  const onClose = () => {
+    let t = open;
+    setOpen((t = !t));
+    props.closeModal();
+  };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
-        onClose={setOpen}
+        onClose={onClose}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child

@@ -21,6 +21,7 @@ function App() {
 
   const [isloading, setLoading] = useState(false);
   const [open_modal_login, setModalLogin] = useState(false);
+  const [userlogedd, setUserLoged] = useState(false);
 
   useEffect(() => {
     GetData();
@@ -32,17 +33,26 @@ function App() {
     const user_token = localStorage.getItem("token");
     form.localId = localStorage.getItem("localId");
     form.email = localStorage.getItem("email");
-    if (!user_token) setModalLogin(true);
+
+    if (!user_token) {
+      setModalLogin(true);
+      console.log("no abrirrr");
+    }
+
+    if (user_token) setUserLoged(true);
   };
 
   const GetData = async () => {
     setLoading(true);
     setData([]);
+
+    const user_id = localStorage.getItem("localId");
+
     try {
-      const response = await axios.get(`${url}/tasks`);
+      const response = await axios.get(`${url}/tasks/?user_id=${user_id}`);
       let array = [];
       response.data.data.map((data) => {
-        array.unshift(data);
+        array.push(data);
       });
 
       setData(array);
@@ -120,9 +130,10 @@ function App() {
 
   const updateTask = async (data) => {
     setLoading(true);
+    console.log(data, "data tarea klk");
 
     try {
-      await axios.put(`${url}/tasks/?todo_id=${data.id}`, data);
+      await axios.put(`${url}/tasks/?todo_id=${data.key}`, data);
       setLoading(false);
 
       // GetData();
@@ -161,10 +172,7 @@ function App() {
     form.localId = localStorage.getItem("localId");
     form.email = localStorage.getItem("email");
     try {
-      const response = await axios.put(
-        `${url}/tasks/?todo_id=${form.key}`,
-        form
-      );
+      await axios.put(`${url}/tasks/?todo_id=${form.key}`, form);
 
       GetData();
       setLoading(false);
@@ -185,9 +193,52 @@ function App() {
     console.log(form, "creando tarea");
   };
 
+  const openModal = () => {
+    const user_token = localStorage.getItem("token");
+    if (!user_token) {
+      let t = open_modal_login;
+      setModalLogin((t = !t));
+    }
+  };
+
+  const abandonar = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("localId");
+    setUserLoged(false);
+  };
+
   return (
     <div className="App">
-      <ModalAuth open_modal_login={open_modal_login} />
+      {open_modal_login && (
+        <ModalAuth
+          open_modal_login={open_modal_login}
+          closeModal={openModal}
+          setUserLoged={validateUser}
+        />
+      )}
+      <Row>
+        <Col xs={10}></Col>
+        <Col xs={2} className="text-right">
+          {userlogedd ? (
+            <a
+              href="#"
+              className="text-blue-600 pr-5 font-bold"
+              onClick={() => abandonar()}
+            >
+              Salir
+            </a>
+          ) : (
+            <a
+              href="#"
+              className="text-blue-600 pr-5 font-bold"
+              onClick={() => openModal()}
+            >
+              Iniciar Sesion
+            </a>
+          )}
+        </Col>
+      </Row>
       <header className="text-center py-4">
         <h1 className="text-3xl font-bold text-indigo-600"> Todo app </h1>{" "}
         <p className="text-md font-semibold text-gray-700">

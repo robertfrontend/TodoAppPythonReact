@@ -77,12 +77,14 @@ def delete_todo(id_todo: str):
 
 @tasks.put('/tasks/')
 def update_posts(todo_id: str, updateTodo: TaskModel):
-    try:
-        # obtener el key de la task
-        key_task = updateTodo.key
-        seleted_task = DB_FIREBASE.child("tasks").child(key_task).get()
 
-        print(seleted_task.val()['name'], 'tarea elegida desde la db')
+    try:
+
+        # buscar tarea en la base de datos, especificamente en la del usuario
+        seleted_task = DB_FIREBASE.child(
+            "users").child(updateTodo.localId).child('tasks').child(todo_id).get()
+
+        print(seleted_task.val(), 'trayendo ')
 
         # convertir dato que viene de firebase
         task_val = seleted_task.val()
@@ -94,7 +96,9 @@ def update_posts(todo_id: str, updateTodo: TaskModel):
         modified_task['status'] = task_val['status'] = updateTodo.status
         modified_task['priority'] = task_val['priority'] = updateTodo.priority
 
-        DB_FIREBASE.child("tasks").child(key_task).update(modified_task)
+        # modificando
+        DB_FIREBASE.child(
+            "users").child(updateTodo.localId).child('tasks').child(todo_id).update(modified_task)
 
         return {
             "message": "Tarea actualizada",
@@ -102,3 +106,21 @@ def update_posts(todo_id: str, updateTodo: TaskModel):
         }
     except:
         raise HTTPException(status_code=404, detail="Tarea not found")
+
+
+@tasks.get('/tasks/')
+def get_tasks_user(user_id: str):
+    results = DB_FIREBASE.child("users").child(user_id).child('tasks').get()
+
+    tasks = []
+
+    for result in results.each():
+        new_result = result.val()
+        new_result["key"] = result.key()
+
+        tasks.append(new_result)
+
+    return {
+        "message": "Tareas del usuario",
+        "data": tasks
+    }
