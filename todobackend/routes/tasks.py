@@ -39,6 +39,7 @@ def get_tasks():
 
 @tasks.post('/tasks')
 def save_todo(todo: TaskModel):
+
     todo.id = str(uuid())
     tasks_db.append(todo.dict())
 
@@ -49,7 +50,12 @@ def save_todo(todo: TaskModel):
     new_task = todo.dict()
     new_task.pop('created_at')
 
+    # guardar la tarea en la base de datos completa
     DB_FIREBASE.child("tasks").push(new_task)
+
+    # guardando la tarea en el usuario que la creo
+    DB_FIREBASE.child("users").child(
+        todo.localId).child('tasks').push(new_task)
 
     return {
         "message": "Todo creado con exito!",

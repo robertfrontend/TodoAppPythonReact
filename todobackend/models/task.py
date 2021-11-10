@@ -13,3 +13,5 @@ class TaskModel(BaseModel):
     priority: str
     created_at: datetime = datetime.now()
     delete: bool = False
+    localId: str
+    email: str

@@ -4,14 +4,14 @@ from fastapi.middleware.cors import CORSMiddleware
 # ROUTES
 from routes.tasks import tasks
 from routes.user import user
-from routes.auth import auth
+from routes.auth import auth_router
 
 
 app = FastAPI()
 
 app.include_router(tasks)
 # app.include_router(user)
-app.include_router(auth)
+app.include_router(auth_router)
 
 
 origins = [

@@ -5,6 +5,7 @@ import axios from "axios";
 import "./App.css";
 import Todos from "./Components/Todos";
 import ButtonsPriority from "./Components/ButtonsPriority";
+import ModalAuth from "./Components/ModalAuth";
 
 function App() {
   // const url = "https://todopythonrobertfronted.herokuapp.com";
@@ -19,10 +20,20 @@ function App() {
   const [type_form, setTypeForm] = useState("create");
 
   const [isloading, setLoading] = useState(false);
+  const [open_modal_login, setModalLogin] = useState(false);
 
   useEffect(() => {
     GetData();
+
+    validateUser();
   }, []);
+
+  const validateUser = () => {
+    const user_token = localStorage.getItem("token");
+    form.localId = localStorage.getItem("localId");
+    form.email = localStorage.getItem("email");
+    if (!user_token) setModalLogin(true);
+  };
 
   const GetData = async () => {
     setLoading(true);
@@ -70,9 +81,11 @@ function App() {
       alert("Todos los campos deben de estar llenos");
       return;
     }
+    form.localId = localStorage.getItem("localId");
+    form.email = localStorage.getItem("email");
 
     try {
-      const response = await axios.post(`${url}/tasks`, form);
+      await axios.post(`${url}/tasks`, form);
 
       GetData();
       setLoading(false);
@@ -145,7 +158,8 @@ function App() {
       alert("Todos los campos deben de estar llenos");
       return;
     }
-
+    form.localId = localStorage.getItem("localId");
+    form.email = localStorage.getItem("email");
     try {
       const response = await axios.put(
         `${url}/tasks/?todo_id=${form.key}`,
@@ -173,6 +187,7 @@ function App() {
 
   return (
     <div className="App">
+      <ModalAuth open_modal_login={open_modal_login} />
       <header className="text-center py-4">
         <h1 className="text-3xl font-bold text-indigo-600"> Todo app </h1>{" "}
         <p className="text-md font-semibold text-gray-700">

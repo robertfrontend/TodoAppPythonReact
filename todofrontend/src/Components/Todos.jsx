@@ -22,16 +22,16 @@ export default function Todos(props) {
 
     props.data.map((dt) => {
       if (dt.status === "string") {
-        array_todo.push(dt);
+        array_todo.unshift(dt);
       }
       if (dt.status === "todo") {
-        array_todo.push(dt);
+        array_todo.unshift(dt);
       }
       if (dt.status === "haciendo") {
-        array_haciendo.push(dt);
+        array_haciendo.unshift(dt);
       }
       if (dt.status === "completada") {
-        array_completada.push(dt);
+        array_completada.unshift(dt);
       }
     });
 
