@@ -61,6 +61,16 @@ function App() {
   const saveTodo = async () => {
     setLoading(true);
 
+    if (
+      form.priority === "" ||
+      form.name === "" ||
+      form.description === "" ||
+      form.priority === ""
+    ) {
+      alert("Todos los campos deben de estar llenos");
+      return;
+    }
+
     try {
       const response = await axios.post(`${url}/tasks`, form);
 
@@ -126,6 +136,15 @@ function App() {
 
   const saveTodoEdit = async () => {
     setLoading(true);
+    if (
+      form.priority === "" ||
+      form.name === "" ||
+      form.description === "" ||
+      form.priority === ""
+    ) {
+      alert("Todos los campos deben de estar llenos");
+      return;
+    }
 
     try {
       const response = await axios.put(
@@ -202,12 +221,39 @@ function App() {
                 placeholder="Escribe una descripción de la tarea..."
               ></textarea>
             </Col>
-            <Col md={12} className="my-3">
-              <ButtonsPriority changePriority={changePriority} />
-            </Col>
-            <Col md={12}>
-              <p className="text-red-400">Todos los campos son requeridos *</p>
-            </Col>
+            {form.description && (
+              <>
+                <Col md={12} className="my-3">
+                  <ButtonsPriority changePriority={changePriority} />
+                </Col>
+                <Col md={12} className="my-3">
+                  {form.priority === "baja" && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-300 text-gray-800">
+                      {form.priority.toUpperCase()}
+                    </span>
+                  )}
+                  {form.priority === "media" && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-300 text-gray-800">
+                      {form.priority.toUpperCase()}
+                    </span>
+                  )}
+                  {form.priority === "alta" && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-300 text-gray-800">
+                      {form.priority.toUpperCase()}
+                    </span>
+                  )}
+                </Col>
+              </>
+            )}
+            {!form.description ||
+              !form.name ||
+              (!form.priority && (
+                <Col md={12}>
+                  <p className="text-red-400">
+                    Todos los campos son requeridos *
+                  </p>
+                </Col>
+              ))}
             <Col className="mt-5">
               {type_form === "create" ? (
                 <button
