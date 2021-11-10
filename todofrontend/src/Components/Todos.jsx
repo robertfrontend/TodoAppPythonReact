@@ -50,7 +50,7 @@ export default function Todos(props) {
   // change status tarea
   const changeStatus = (type, data) => {
     if (type === "delete") {
-      props.deleteTask(data.id);
+      props.deleteTask(data.key);
     }
 
     if (type === "todo") {
@@ -68,7 +68,9 @@ export default function Todos(props) {
       props.updateTask(data);
     }
 
-    console.log(type, data, "change status data");
+    if (type === "edit") {
+      props.editTask(data);
+    }
   };
 
   const clasbutton =

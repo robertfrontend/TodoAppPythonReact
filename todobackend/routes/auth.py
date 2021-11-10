@@ -15,7 +15,7 @@ def create_user(user: User):
 
 def signup():
     email = "enanow41romero@gmail.com"
-    password = "robert2020"
+    password = "123456"
 
     try:
         user = auth.create_user_with_email_and_password(email, password)
@@ -26,7 +26,7 @@ def signup():
 
 def login():
     email = "enanow41romero@gmail.com"
-    password = "robert2020"
+    password = "123456"
 
     user = auth.sign_in_with_email_and_password(email, password)
 

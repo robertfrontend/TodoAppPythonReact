@@ -59,19 +59,18 @@ def save_todo(todo: TaskModel):
 
 @tasks.delete('/tasks/{id_todo}')
 def delete_todo(id_todo: str):
-    for index, todo in enumerate(tasks_db):
-        if todo["id"] == id_todo:
-            tasks_db.pop(index)
-            return {
-                "message": "Tarea eliminado con exito",
-                "data": tasks_db
-            }
-    raise HTTPException(status_code=404, detail=" Tarea not found")
+
+    try:
+        seleted_task = DB_FIREBASE.child("tasks").child(id_todo).get()
+
+        DB_FIREBASE.child("tasks").child(id_todo).remove()
+        print(seleted_task.val(), 'Tarea eliminada exitosament1!!!')
+    except:
+        raise HTTPException(status_code=404, detail=" Tarea not found")
 
 
 @tasks.put('/tasks/')
 def update_posts(todo_id: str, updateTodo: TaskModel):
-
     try:
         # obtener el key de la task
         key_task = updateTodo.key

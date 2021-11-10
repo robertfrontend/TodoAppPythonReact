@@ -23,7 +23,12 @@ function Card(props) {
   return (
     <Col xs={12} className={"mt-4 p-4 rounded-lg" + " " + seleted}>
       <div className="text-right">
-        <i className="fas fa-edit text-gray-500 text-xl cursor-pointer mx-2"></i>
+        <a
+          href="#formulario"
+          onClick={() => props.changeStatus("edit", props.todo)}
+        >
+          <i className="fas fa-edit text-gray-500 text-xl cursor-pointer mx-2"></i>
+        </a>
         <i
           className="fas fa-trash-alt text-red-500 text-xl cursor-pointer mx-2"
           onClick={() => props.changeStatus("delete", props.todo)}

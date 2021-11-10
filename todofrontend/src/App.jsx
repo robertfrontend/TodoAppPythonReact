@@ -16,6 +16,8 @@ function App() {
     status: "todo",
   });
 
+  const [type_form, setTypeForm] = useState("create");
+
   const [isloading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -108,6 +110,48 @@ function App() {
     }
   };
 
+  const editTask = (data) => {
+    console.log(data, "edit task");
+
+    setTypeForm("edit");
+
+    setForm({
+      priority: data.priority,
+      name: data.name,
+      description: data.description,
+      status: data.status,
+      key: data.key,
+    });
+  };
+
+  const saveTodoEdit = async () => {
+    setLoading(true);
+
+    try {
+      const response = await axios.put(
+        `${url}/tasks/?todo_id=${form.key}`,
+        form
+      );
+
+      GetData();
+      setLoading(false);
+
+      setForm({
+        priority: "",
+        name: "",
+        description: "",
+        status: "todo",
+      });
+
+      setTypeForm("create");
+    } catch (error) {
+      setLoading(false);
+      setTypeForm("create");
+    }
+
+    console.log(form, "creando tarea");
+  };
+
   return (
     <div className="App">
       <header className="text-center py-4">
@@ -119,10 +163,10 @@ function App() {
           </span>{" "}
         </p>{" "}
       </header>
-      <div className="form ">
+      <div className="form" id="formulario">
         <Container>
           <h1 className="text-3xl font-bold text-gray-600 mt-10">
-            Crear tarea{" "}
+            {type_form === "create" ? "Crear" : "Editar"} tarea{" "}
           </h1>
           <Row
             align="center"
@@ -165,20 +209,37 @@ function App() {
               <p className="text-red-400">Todos los campos son requeridos *</p>
             </Col>
             <Col className="mt-5">
-              <button
-                type="button"
-                // disabled
-                className="inline-flex w-full  justify-center items-center 
+              {type_form === "create" ? (
+                <button
+                  type="button"
+                  // disabled
+                  className="inline-flex w-full  justify-center items-center 
                     px-6 py-3 border border-transparent text-base font-medium rounded-md s hadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none focus: ring-2 focus: ring-offset-2 focus: ring-indigo-500 "
-                onClick={() => saveTodo()}
-              >
-                Crear Tarea
-              </button>
+                  onClick={() => saveTodo()}
+                >
+                  Crear Tarea
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  // disabled
+                  className="inline-flex w-full  justify-center items-center 
+                    px-6 py-3 border border-transparent text-base font-medium rounded-md s hadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none focus: ring-2 focus: ring-offset-2 focus: ring-indigo-500 "
+                  onClick={() => saveTodoEdit()}
+                >
+                  Editar Tarea
+                </button>
+              )}
             </Col>
           </Row>
           <h1 className="text-3xl font-bold text-gray-600 mt-10">Mis Tareas</h1>
           {/* {!isloading && ( */}
-          <Todos data={data} deleteTask={deleteTask} updateTask={updateTask} />
+          <Todos
+            data={data}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            editTask={editTask}
+          />
           {/* )} */}
           {isloading && (
             <div className="text-center">
