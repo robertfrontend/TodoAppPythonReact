@@ -63,18 +63,6 @@ def save_todo(todo: TaskModel):
     }
 
 
-# @tasks.delete('/tasks/{id_todo}')
-# def delete_todo(id_todo: str):
-
-#     try:
-#         seleted_task = DB_FIREBASE.child("tasks").child(id_todo).get()
-
-#         DB_FIREBASE.child("tasks").child(id_todo).remove()
-#         print(seleted_task.val(), 'Tarea eliminada exitosament1!!!')
-#     except:
-#         raise HTTPException(status_code=404, detail=" Tarea not found")
-
-
 @tasks.put('/tasks_delete/')
 def delete_todo(todo_id: str, updateTodo: TaskModel):
     print(todo_id)
@@ -82,8 +70,7 @@ def delete_todo(todo_id: str, updateTodo: TaskModel):
     try:
 
         # buscar tarea en la db
-        seleted_task = DB_FIREBASE.child(
-            "users").child(updateTodo.localId).child('tasks').child(todo_id).get()
+        seleted_task = search_task_id(updateTodo.localId, todo_id)
 
         # eliminar la tarea en la db del usuario
         DB_FIREBASE.child(
@@ -102,10 +89,8 @@ def update_posts(todo_id: str, updateTodo: TaskModel):
 
     try:
         # buscar tarea en la base de datos, especificamente en la del usuario
-        seleted_task = DB_FIREBASE.child(
-            "users").child(updateTodo.localId).child('tasks').child(todo_id).get()
 
-        print(seleted_task.val(), 'trayendo ')
+        seleted_task = search_task_id(updateTodo.localId, todo_id)
 
         # convertir dato que viene de firebase
         task_val = seleted_task.val()
@@ -145,3 +130,10 @@ def get_tasks_user(user_id: str):
         "message": "Tareas del usuario",
         "data": tasks
     }
+
+
+# funcion reutilizable para buscar tarea de un usuario en especifico
+def search_task_id(localId, task_id):
+    data = DB_FIREBASE.child("users").child(
+        localId).child('tasks').child(task_id).get()
+    return data

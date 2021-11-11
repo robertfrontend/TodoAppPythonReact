@@ -100,6 +100,7 @@ function App() {
         name: "",
         description: "",
         status: "todo",
+        email: form.email,
       });
     } catch (error) {
       setLoading(false);
@@ -177,6 +178,7 @@ function App() {
         name: "",
         description: "",
         status: "todo",
+        email: form.email,
       });
 
       setTypeForm("create");
@@ -225,7 +227,8 @@ function App() {
                 className="text-gray-400 font-bold"
                 onClick={() => abandonar()}
               >
-                Salir de {form.email} <i className="fas fa-sign-out-alt"></i>
+                <i className="fas fa-sign-out-alt"></i> Salir de{" "}
+                <span className="text-gray-500">{form.email}</span>{" "}
               </a>
             ) : (
               <a
