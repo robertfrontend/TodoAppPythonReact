@@ -50,7 +50,9 @@ export default function Todos(props) {
   // change status tarea
   const changeStatus = (type, data) => {
     if (type === "delete") {
-      props.deleteTask(data);
+      let confirms = confirm("Estas seguro que deseas eliminar esta tarea?");
+
+      if (confirms) props.deleteTask(data);
     }
 
     if (type === "todo") {
