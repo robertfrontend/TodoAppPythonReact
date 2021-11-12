@@ -31,10 +31,12 @@ def get_tasks():
             "data": task
         }
 
-    return {
-        "message": 'Todo Ok',
-        "data": task
-    }
+    return responses_api('Todo Ok', task)
+
+    # {
+    #     "message": 'Todo Ok',
+    #     "data": task
+    # }
 
 
 @tasks.post('/tasks')
@@ -57,10 +59,12 @@ def save_todo(todo: TaskModel):
     DB_FIREBASE.child("users").child(
         todo.localId).child('tasks').push(new_task)
 
-    return {
-        "message": "Todo creado con exito!",
-        "data": tasks_db[-1]
-    }
+    return responses_api("Todo creado con exito!", tasks_db[-1])
+
+# {
+#         "message": "Todo creado con exito!",
+#         "data": tasks_db[-1]
+#     }
 
 
 @tasks.put('/tasks_delete/')
@@ -76,10 +80,12 @@ def delete_todo(todo_id: str, updateTodo: TaskModel):
         DB_FIREBASE.child(
             "users").child(updateTodo.localId).child('tasks').child(todo_id).remove()
 
-        return {
-            "message": "Tarea eliminada exitosament!!!",
-            "data": seleted_task.val()
-        }
+        return responses_api("Tarea eliminada exitosament!!!", seleted_task.val())
+
+    # {
+    #         "message": "Tarea eliminada exitosament!!!",
+    #         "data": seleted_task.val()
+    #     }
     except:
         raise HTTPException(status_code=404, detail=" Tarea not found")
 
@@ -106,30 +112,30 @@ def update_posts(todo_id: str, updateTodo: TaskModel):
         DB_FIREBASE.child(
             "users").child(updateTodo.localId).child('tasks').child(todo_id).update(modified_task)
 
-        return {
-            "message": "Tarea actualizada",
-            "data": tasks_db
-        }
+        return responses_api("Tarea actualizada", tasks_db)
+
     except:
         raise HTTPException(status_code=404, detail="Tarea not found")
 
 
 @tasks.get('/tasks/')
 def get_tasks_user(user_id: str):
+
     results = DB_FIREBASE.child("users").child(user_id).child('tasks').get()
 
     tasks = []
 
-    for result in results.each():
-        new_result = result.val()
-        new_result["key"] = result.key()
+    if results.val() is None:
+        return responses_api("No hay datos", [])
+    else:
+        for result in results.each():
+            new_result = {}
+            new_result = result.val()
+            new_result["key"] = result.key()
 
-        tasks.append(new_result)
+            tasks.append(new_result)
 
-    return {
-        "message": "Tareas del usuario",
-        "data": tasks
-    }
+        return responses_api("Tareas del usuario", tasks)
 
 
 # funcion reutilizable para buscar tarea de un usuario en especifico
@@ -137,3 +143,11 @@ def search_task_id(localId, task_id):
     data = DB_FIREBASE.child("users").child(
         localId).child('tasks').child(task_id).get()
     return data
+
+
+def responses_api(message, data):
+    print("nueva funcion")
+    return {
+        "message": message,
+        "data": data
+    }

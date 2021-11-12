@@ -15,35 +15,34 @@ auth_router = APIRouter()
 def create_user(user: User):
 
     try:
-        user_create = auth.create_user_with_email_and_password(
-            user.email, user.password)
-        print("Successfully create user!")
-
-        # print(user_create, 'klk user create')
-        # DB_FIREBASE.child("users").push(user.email)
-        print(user, "user emailklk")
-        DB_FIREBASE.child("users").child(user.name).push(user.email)
+        created = auth.create_user_with_email_and_password(
+            user.email,
+            user.password
+        )
 
         return {
-            "message": 'Usuario creado con exito',
-            "data": user_create
+            "message": "usuario creado con exito!!",
+            "data": created,
+            "status_code": 200
         }
+
     except:
         return HTTPException(status_code=401, detail="Email already exists! / Correo invalido")
 
 
 @auth_router.post('/login')
 def signup(user: UserSignup):
-    print(user, 'user login')
 
     try:
         user_login = auth.sign_in_with_email_and_password(
-            user.email, user.password)
-        print("Successfully login user!", user_login)
+            user.email,
+            user.password
+        )
 
         return {
             "message": 'Todo Ok',
-            "data": user_login
+            "data": user_login,
+            "status_code": 200
         }
     except:
         return HTTPException(status_code=401, detail="Este usuario no existe")

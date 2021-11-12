@@ -49,9 +49,15 @@ export default function ModalAuth(props) {
   };
 
   const handleRegister = async () => {
+    form.name = form.email;
     try {
       const response = await API.post("/register", form);
-      setOpen(false);
+
+      if (response.data.status_code === 200) {
+        handleLogin();
+        setOpen(false);
+        console.log('usuario creado con exito!!!!')
+      }
     } catch (error) {
       alert("error al registrar usuarii");
     }
