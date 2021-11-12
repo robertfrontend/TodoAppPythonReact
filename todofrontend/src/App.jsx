@@ -6,10 +6,11 @@ import "./App.css";
 import Todos from "./Components/Todos";
 import ButtonsPriority from "./Components/ButtonsPriority";
 import ModalAuth from "./Components/ModalAuth";
+import { API } from "./utils/config";
 
 function App() {
-  // const url = "https://todopythonrobertfronted.herokuapp.com";
-  const url = "http://127.0.0.1:8000";
+  const url = "https://todopythonrobertfronted.herokuapp.com";
+  // const url = "http://127.0.0.1:8000";
 
   const [data, setData] = useState([]);
 
@@ -52,7 +53,7 @@ function App() {
     const user_id = localStorage.getItem("localId");
 
     try {
-      const response = await axios.get(`${url}/tasks/?user_id=${user_id}`);
+      const response = await API.get(`/tasks/?user_id=${user_id}`);
       let array = [];
       response.data.data.map((data) => {
         array.push(data);
@@ -93,7 +94,7 @@ function App() {
     form.email = localStorage.getItem("email");
 
     try {
-      await axios.post(`${url}/tasks`, form);
+      await API.post(`/tasks`, form);
 
       GetData();
       setLoading(false);
@@ -114,7 +115,7 @@ function App() {
     setLoading(true);
 
     try {
-      await axios.put(`${url}/tasks_delete/?todo_id=${data.key}`, data);
+      await API.put(`/tasks_delete/?todo_id=${data.key}`, data);
 
       GetData();
       setLoading(false);
@@ -127,7 +128,7 @@ function App() {
     setLoading(true);
 
     try {
-      await axios.put(`${url}/tasks/?todo_id=${data.key}`, data);
+      await API.put(`/tasks/?todo_id=${data.key}`, data);
       setLoading(false);
 
       // GetData();
@@ -164,7 +165,7 @@ function App() {
     form.localId = localStorage.getItem("localId");
     form.email = localStorage.getItem("email");
     try {
-      await axios.put(`${url}/tasks/?todo_id=${form.key}`, form);
+      await API.put(`/tasks/?todo_id=${form.key}`, form);
 
       GetData();
       setLoading(false);
