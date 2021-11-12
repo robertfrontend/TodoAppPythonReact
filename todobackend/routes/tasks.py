@@ -31,12 +31,7 @@ def get_tasks():
             "data": task
         }
 
-    return responses_api('Todo Ok', task)
-
-    # {
-    #     "message": 'Todo Ok',
-    #     "data": task
-    # }
+    return responses_api('Todo Ok', task, 200)
 
 
 @tasks.post('/tasks')
@@ -59,12 +54,7 @@ def save_todo(todo: TaskModel):
     DB_FIREBASE.child("users").child(
         todo.localId).child('tasks').push(new_task)
 
-    return responses_api("Todo creado con exito!", tasks_db[-1])
-
-# {
-#         "message": "Todo creado con exito!",
-#         "data": tasks_db[-1]
-#     }
+    return responses_api("Todo creado con exito!", tasks_db[-1], 200)
 
 
 @tasks.put('/tasks_delete/')
@@ -80,12 +70,8 @@ def delete_todo(todo_id: str, updateTodo: TaskModel):
         DB_FIREBASE.child(
             "users").child(updateTodo.localId).child('tasks').child(todo_id).remove()
 
-        return responses_api("Tarea eliminada exitosament!!!", seleted_task.val())
+        return responses_api("Tarea eliminada exitosament!!!", seleted_task.val(), 200)
 
-    # {
-    #         "message": "Tarea eliminada exitosament!!!",
-    #         "data": seleted_task.val()
-    #     }
     except:
         raise HTTPException(status_code=404, detail=" Tarea not found")
 
@@ -112,7 +98,7 @@ def update_posts(todo_id: str, updateTodo: TaskModel):
         DB_FIREBASE.child(
             "users").child(updateTodo.localId).child('tasks').child(todo_id).update(modified_task)
 
-        return responses_api("Tarea actualizada", tasks_db)
+        return responses_api("Tarea actualizada", tasks_db, 200)
 
     except:
         raise HTTPException(status_code=404, detail="Tarea not found")
@@ -126,7 +112,7 @@ def get_tasks_user(user_id: str):
     tasks = []
 
     if results.val() is None:
-        return responses_api("No hay datos", [])
+        return responses_api("No hay datos", [], 200)
     else:
         for result in results.each():
             new_result = {}
@@ -135,7 +121,7 @@ def get_tasks_user(user_id: str):
 
             tasks.append(new_result)
 
-        return responses_api("Tareas del usuario", tasks)
+        return responses_api("Tareas del usuario", tasks, 200)
 
 
 # funcion reutilizable para buscar tarea de un usuario en especifico
@@ -145,9 +131,10 @@ def search_task_id(localId, task_id):
     return data
 
 
-def responses_api(message, data):
+def responses_api(message, data, status_code):
     print("nueva funcion")
     return {
         "message": message,
-        "data": data
+        "data": data,
+        "status_code": status_code
     }
