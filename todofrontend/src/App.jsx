@@ -23,6 +23,8 @@ function App() {
   const [open_modal_login, setModalLogin] = useState(false);
   const [userlogedd, setUserLoged] = useState(false);
 
+  const [user, setUser] = useState("");
+
   useEffect(() => {
     GetData();
 
@@ -34,9 +36,10 @@ function App() {
     form.localId = localStorage.getItem("localId");
     form.email = localStorage.getItem("email");
 
+    setUser(localStorage.getItem("email"));
+
     if (!user_token) {
       setModalLogin(true);
-      console.log("no abrirrr");
     }
 
     if (user_token) setUserLoged(true);
@@ -105,8 +108,6 @@ function App() {
     } catch (error) {
       setLoading(false);
     }
-
-    console.log(form, "creando tarea");
   };
 
   const deleteTask = async (data) => {
@@ -120,13 +121,10 @@ function App() {
     } catch (error) {
       setLoading(false);
     }
-
-    console.log(data, "id a eliminar");
   };
 
   const updateTask = async (data) => {
     setLoading(true);
-    console.log(data, "data tarea klk");
 
     try {
       await axios.put(`${url}/tasks/?todo_id=${data.key}`, data);
@@ -141,8 +139,6 @@ function App() {
   };
 
   const editTask = (data) => {
-    console.log(data, "edit task");
-
     setTypeForm("edit");
 
     setForm({
@@ -186,8 +182,6 @@ function App() {
       setLoading(false);
       setTypeForm("create");
     }
-
-    console.log(form, "creando tarea");
   };
 
   const openModal = () => {
@@ -228,7 +222,7 @@ function App() {
                 onClick={() => abandonar()}
               >
                 <i className="fas fa-sign-out-alt"></i> Salir de{" "}
-                <span className="text-gray-500">{form.email}</span>{" "}
+                <span className="text-gray-500">{user}</span>{" "}
               </a>
             ) : (
               <a

@@ -49,7 +49,7 @@ export default function ModalAuth(props) {
         password: "",
       });
     } catch (error) {
-      alert("error al iniciar sesion");
+      alert("error al iniciar sesión");
     }
   };
 
@@ -122,8 +122,8 @@ export default function ModalAuth(props) {
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
               {login ? (
                 <>
-                  <h1 className="text-xl font-semibold text-indigo-600">
-                    Iniciar Sesion
+                  <h1 className="text-2xl font-bold text-indigo-500">
+                    Iniciar Sesión
                   </h1>
                   <Row>
                     <Col md={12} className="my-3">
@@ -155,10 +155,10 @@ export default function ModalAuth(props) {
                   </Row>
                   <a
                     href="#"
-                    className="text-blue-600"
+                    className="text-blue-600 font-semibold text-lg"
                     onClick={() => setLogin(false)}
                   >
-                    Regisrarme
+                    Crear usuario
                   </a>
                   <div className="mt-5 sm:mt-6">
                     <button
@@ -166,29 +166,16 @@ export default function ModalAuth(props) {
                       className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
                       onClick={() => handleLogin()}
                     >
-                      Iniciar Sesion
+                      Iniciar sesión
                     </button>
                   </div>
                 </>
               ) : (
                 <>
-                  <h1 className="text-xl font-semibold text-indigo-600">
-                    Registrarme
+                  <h1 className="text-2xl font-bold text-indigo-500">
+                    Crear usuario
                   </h1>
                   <Row>
-                    {/* <Col md={12} className="my-2">
-                      <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Nombre
-                      </label>
-                      <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="name"
-                        type="text"
-                        placeholder="Nombre de usuario o correo"
-                        value={form.name}
-                        onChange={onChange}
-                      />
-                    </Col> */}
                     <Col md={12} className="my-2">
                       <label className="block text-gray-700 text-sm font-bold mb-2">
                         Correo/Usuario
@@ -197,7 +184,7 @@ export default function ModalAuth(props) {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="email"
                         type="email"
-                        placeholder="Nombre de usuario o correo"
+                        placeholder="ejemplo@gmail.com"
                         value={form.email}
                         onChange={onChange}
                       />
@@ -218,10 +205,10 @@ export default function ModalAuth(props) {
                   </Row>
                   <a
                     href="#"
-                    className="text-blue-600"
+                    className="text-blue-600 font-semibold text-lg"
                     onClick={() => setLogin(true)}
                   >
-                    Iniciar Sesion
+                    Iniciar sesión
                   </a>
                   <div className="mt-5 sm:mt-6">
                     <button

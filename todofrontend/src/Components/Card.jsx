@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-grid-system";
 
 function Card(props) {
-  //   console.log(props, "props klk paapa card");
-
   const [seleted, setSeleted] = useState("bg-blue-100");
 
   useEffect(() => {
