@@ -109,6 +109,16 @@ export default function Todos(props) {
           ))}
         </Col>
       </Row>
+      {props.data.length === 0 && (
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-600 mt-10 mb-2">
+            No hay tareas🤷‍♂️
+          </h1>
+          <p href="#formulario" className="text-blue-600 font-semibold">
+            Crear una nueva tarea
+          </p>
+        </div>
+      )}
     </Container>
   );
 }

@@ -2,6 +2,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Row, Col, Container } from "react-grid-system";
 import { Dialog, Transition } from "@headlessui/react";
+import { validate } from "react-email-validator";
 import { API } from "../utils/config";
 
 export default function ModalAuth(props) {
@@ -28,6 +29,10 @@ export default function ModalAuth(props) {
   };
 
   const handleLogin = async () => {
+    if (!validate(form.email)) {
+      alert("Email Invalido!");
+      return;
+    }
     try {
       const response = await API.post("/login", form);
 
@@ -49,17 +54,26 @@ export default function ModalAuth(props) {
   };
 
   const handleRegister = async () => {
+    if (!validate(form.email)) {
+      alert("Email Invalido!");
+      return;
+    }
+
     form.name = form.email;
     try {
       const response = await API.post("/register", form);
 
-      if (response.data.status_code === 200) {
+      const status = response.data.status_code;
+
+      if (status === 200) {
         handleLogin();
         setOpen(false);
-        console.log('usuario creado con exito!!!!')
+      }
+      if (status === 401) {
+        alert("Este correo electronico ya existe");
       }
     } catch (error) {
-      alert("error al registrar usuarii");
+      alert("error al registrar usuario");
     }
   };
 
