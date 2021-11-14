@@ -246,134 +246,159 @@ function App() {
           </span>{" "}
         </p>{" "}
       </header>
-      <div className="form" id="formulario">
-        <Container>
-          <h1 className="text-3xl font-bold text-gray-600 mt-10">
-            {type_form === "create" ? "Crear" : "Editar"} tarea{" "}
-          </h1>
-          <Row
-            align="center"
-            justify="center"
-            style={{
-              width: "100%",
-              margin: "0 auto",
-            }}
-          >
-            <Col md={12} className="my-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Título
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="name"
-                type="text"
-                placeholder="Nombre de la tarea"
-                value={form.name}
-                onChange={onChange}
-              />
-            </Col>
-            <Col md={12} className="my-3">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Descripción
-              </label>
-              <textarea
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="description"
-                type="text"
-                value={form.description}
-                onChange={onChange}
-                placeholder="Escribe una descripción de la tarea..."
-              ></textarea>
-            </Col>
-            {form.description && (
-              <>
-                <Col md={12} className="my-3">
-                  <ButtonsPriority
-                    changePriority={changePriority}
-                    priority={form.priority}
-                  />
-                </Col>
-                <Col md={12} className="my-3">
-                  {form.priority === "baja" && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-300 text-gray-800">
-                      {form.priority.toUpperCase()}
-                    </span>
-                  )}
-                  {form.priority === "media" && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-300 text-gray-800">
-                      {form.priority.toUpperCase()}
-                    </span>
-                  )}
-                  {form.priority === "alta" && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-300 text-gray-800">
-                      {form.priority.toUpperCase()}
-                    </span>
-                  )}
-                </Col>
-              </>
-            )}
-            <Col className="mt-5">
-              {!form.name || !form.description || !form.priority ? (
-                <p className="text-red-400">
-                  Todos los campos son requeridos *
-                </p>
-              ) : (
-                <></>
+      {userlogedd ? (
+        <div className="form" id="formulario">
+          <Container>
+            <h1 className="text-3xl font-bold text-gray-600 mt-10">
+              {type_form === "create" ? "Crear" : "Editar"} tarea{" "}
+            </h1>
+            <Row
+              align="center"
+              justify="center"
+              style={{
+                width: "100%",
+                margin: "0 auto",
+              }}
+            >
+              <Col md={12} className="my-3">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Título
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="name"
+                  type="text"
+                  placeholder="Nombre de la tarea"
+                  value={form.name}
+                  onChange={onChange}
+                />
+              </Col>
+              <Col md={12} className="my-3">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Descripción
+                </label>
+                <textarea
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="description"
+                  type="text"
+                  value={form.description}
+                  onChange={onChange}
+                  placeholder="Escribe una descripción de la tarea..."
+                ></textarea>
+              </Col>
+              {form.description && (
+                <>
+                  <Col md={12} className="my-3">
+                    <ButtonsPriority
+                      changePriority={changePriority}
+                      priority={form.priority}
+                    />
+                  </Col>
+                  <Col md={12} className="my-3">
+                    {form.priority === "baja" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-300 text-gray-800">
+                        {form.priority.toUpperCase()}
+                      </span>
+                    )}
+                    {form.priority === "media" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-300 text-gray-800">
+                        {form.priority.toUpperCase()}
+                      </span>
+                    )}
+                    {form.priority === "alta" && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-300 text-gray-800">
+                        {form.priority.toUpperCase()}
+                      </span>
+                    )}
+                  </Col>
+                </>
               )}
-              {type_form === "create" ? (
-                <button
-                  type="button"
-                  // disabled
-                  className={
-                    !form.name || !form.description || !form.priority
-                      ? `inline-flex w-full  justify-center items-center 
+              <Col className="mt-5">
+                {!form.name || !form.description || !form.priority ? (
+                  <p className="text-red-400">
+                    Todos los campos son requeridos *
+                  </p>
+                ) : (
+                  <></>
+                )}
+                {type_form === "create" ? (
+                  <button
+                    type="button"
+                    // disabled
+                    className={
+                      !form.name || !form.description || !form.priority
+                        ? `inline-flex w-full  justify-center items-center 
                         px-6 py-3 border border-transparent text-base font-medium rounded-md 
                         shadow-sm text-gray-500 bg-gray-300 focus: outline-none`
-                      : `inline-flex w-full  justify-center items-center 
+                        : `inline-flex w-full  justify-center items-center 
                   px-6 py-3 border border-transparent text-base font-medium rounded-md 
                   shadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none`
-                  }
-                  onClick={() => saveTodo()}
-                >
-                  Crear Tarea
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className={
-                    !form.name || !form.description || !form.priority
-                      ? `inline-flex w-full  justify-center items-center 
+                    }
+                    onClick={() => saveTodo()}
+                  >
+                    Crear Tarea
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={
+                      !form.name || !form.description || !form.priority
+                        ? `inline-flex w-full  justify-center items-center 
                         px-6 py-3 border border-transparent text-base font-medium rounded-md 
                         shadow-sm text-gray-500 bg-gray-300 focus: outline-none`
-                      : `inline-flex w-full  justify-center items-center 
+                        : `inline-flex w-full  justify-center items-center 
                   px-6 py-3 border border-transparent text-base font-medium rounded-md 
                   shadow-sm text-white bg-indigo-600 hover: bg-indigo-700 focus: outline-none`
-                  }
-                  onClick={() => saveTodoEdit()}
-                >
-                  Editar Tarea
-                </button>
-              )}
-            </Col>
-          </Row>
-          <h1 className="text-3xl font-bold text-gray-600 mt-10">Mis Tareas</h1>
-          {/* {!isloading && ( */}
-          <Todos
-            data={data}
-            deleteTask={deleteTask}
-            updateTask={updateTask}
-            editTask={editTask}
-          />
-          {/* )} */}
-          {isloading && (
-            <div className="text-center">
-              <div className="lds-ellipsis">
-                <div> </div> <div> </div> <div> </div> <div> </div>
+                    }
+                    onClick={() => saveTodoEdit()}
+                  >
+                    Editar Tarea
+                  </button>
+                )}
+              </Col>
+            </Row>
+            <h1 className="text-3xl font-bold text-gray-600 mt-10">
+              Mis Tareas
+            </h1>
+            {/* {!isloading && ( */}
+            <Todos
+              data={data}
+              deleteTask={deleteTask}
+              updateTask={updateTask}
+              editTask={editTask}
+            />
+            {/* )} */}
+            {isloading && (
+              <div className="text-center">
+                <div className="lds-ellipsis">
+                  <div> </div> <div> </div> <div> </div> <div> </div>
+                </div>
               </div>
-            </div>
-          )}
-        </Container>
-      </div>
+            )}
+          </Container>
+        </div>
+      ) : (
+        <>
+          <div className="text-center">
+            <h1 className="text-3xl">
+              Bienvenidos a Todo App, antes de entrar a la app primero debes de
+              iniciar sesion o crear una cuenta🤗. Si no tienes cuenta no te
+              preocupes , es muy facil crear una.
+            </h1>
+            <button
+              type="button"
+              className="inline-flex items-center 
+              px-4 py-2 border border-transparent 
+              text-sm font-medium rounded-md 
+              shadow-sm text-white bg-blue-600 
+              hover:bg-blue-700 focus:outline-none mt-5"
+              onClick={() => openModal()}
+            >
+              Crear cuenta o Iniciar sesion
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
